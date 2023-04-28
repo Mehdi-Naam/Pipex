@@ -58,3 +58,5 @@ clean :
 fclean : clean
 		$(RM) $(NAME) $(NAME_BUS)
 re : fclean all
+
+bre : fclean bonus

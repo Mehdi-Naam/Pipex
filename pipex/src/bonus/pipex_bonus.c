@@ -6,7 +6,7 @@
 /*   By: enaam <enaam@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 03:13:43 by enaam             #+#    #+#             */
-/*   Updated: 2023/04/17 00:21:22 by enaam            ###   ########.fr       */
+/*   Updated: 2023/04/17 17:20:38 by enaam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ void	ft_heredoc(t_pipex *pipx, char *lim)
 	while (1)
 	{
 		str = get_next_line(0);
-		if (!str || ft_str(str, lim) == 1)
+		if (!str || ft_str(str, lim))
+		{
+			free(str);
 			break ;
+		}
 		ft_putstr(str, NULL, pipx->fd_doc);
 		free(str);
 	}
-	unlink("tmp");
 	pipx->is_doc = 1;
 }
 
@@ -52,6 +54,8 @@ int	main(int ac, char **av, char **env)
 {
 	t_pipex *pipx;
 
+	if (ac < 5)
+		exit(1);
 	pipx = ft_malloc(sizeof(t_pipex));
 	pipx->ac = ac;
 	pipx->av = av;
@@ -66,6 +70,7 @@ int	main(int ac, char **av, char **env)
 	}
 	ft_cmd(pipx);
 	ft_execute(pipx);
+	unlink("tmp");
 	ft_free(pipx->cmd);
 	free(pipx);
 }
